@@ -38,7 +38,7 @@ class ModelForm(forms.ModelForm):
             ['%s%s' % (x[0].upper(), x[1:]) for x in name.split(' ') if x])
         name = slugify(name)
 
-        if not (self.instance and self.instance.name == name ):
+        if not (self.instance and self.instance.name == name):
             if Model.objects.filter(name=name, application=self.application):
                 raise ValidationError(
                     '%s is already in use in this application' % name)

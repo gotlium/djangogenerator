@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django import forms
+from django.db.models import Q
 
 from apps.model.utils import slugify
 from apps.model.models import Model
@@ -46,7 +47,8 @@ class FieldForm(forms.ModelForm):
         super(FieldForm, self).__init__(*args, **kwargs)
         if 'relation' in self.fields:
             self.fields['relation'].queryset = Model.objects.filter(
-                application__project=model.application.project)
+                Q(application__project=model.application.project) | Q(
+                    application__project__is_sys=True))
         self.model = model
 
     def clean_name(self):

@@ -1,0 +1,32 @@
+[
+    {
+        "pk": 1,
+        "model": "application.application",
+        "fields": {
+            "project": 1,
+            "name": "sites",
+            "modification_date": "2013-10-22T04:34:26.074Z",
+            "creation_date": "2013-10-22T04:34:16.414Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "application.application",
+        "fields": {
+            "project": 1,
+            "name": "auth",
+            "modification_date": "2013-10-22T04:34:50.706Z",
+            "creation_date": "2013-10-22T04:34:50.706Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "application.application",
+        "fields": {
+            "project": 1,
+            "name": "sessions",
+            "modification_date": "2013-10-22T04:35:27.476Z",
+            "creation_date": "2013-10-22T04:35:16.214Z"
+        }
+    }
+]

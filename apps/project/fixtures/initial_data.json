@@ -1,0 +1,16 @@
+[
+    {
+        "pk": 1,
+        "model": "project.project",
+        "fields": {
+            "profile": null,
+            "name": "django",
+            "modification_date": "2013-10-22T04:34:05.567Z",
+            "creation_date": "2013-10-22T04:34:05.567Z",
+            "owner": 1,
+            "public": false,
+            "description": "Internal models",
+            "is_sys": true
+        }
+    }
+]

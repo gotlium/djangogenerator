@@ -3,7 +3,8 @@ from models import ModelField
 
 
 def delete_linked_field(sender, instance, **kwargs):
-    instance.object.delete()
+    if instance.object is not None:
+        instance.object.delete()
 
 
 post_delete.connect(delete_linked_field, sender=ModelField)

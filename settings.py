@@ -87,6 +87,7 @@ INSTALLED_APPS = (
 
     'registration',
     'django_extensions',
+    'south',
 
     'apps.project',
     'apps.model',

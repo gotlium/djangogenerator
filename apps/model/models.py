@@ -1,12 +1,11 @@
 from django.db import models
-
 from apps.model.utils import slugify
 
 
 class Model(models.Model):
     name = models.CharField(max_length=255)
-    application = models.ForeignKey('application.Application',
-                                    related_name='models')
+    application = models.ForeignKey(
+        'application.Application', related_name='models')
     description = models.TextField(blank=True)
 
     # Meta options
@@ -38,4 +37,3 @@ class Permissions(models.Model):
 
     def __unicode__(self):
         return '("%s", "%s")' % (slugify(self.name), self.name)
-

@@ -1,0 +1,56 @@
+[
+    {
+        "pk": 1,
+        "model": "model.model",
+        "fields": {
+            "name": "Site",
+            "modification_date": "2013-10-22T04:34:24.539Z",
+            "has_read_only_view": false,
+            "verbose_name_plural": "",
+            "creation_date": "2013-10-22T04:34:22.585Z",
+            "application": 1,
+            "db_table": "",
+            "has_form_view": false,
+            "verbose_name": "",
+            "has_admin_view": true,
+            "is_in_menu": false,
+            "description": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "model.model",
+        "fields": {
+            "name": "User",
+            "modification_date": "2013-10-22T04:35:01.777Z",
+            "has_read_only_view": false,
+            "verbose_name_plural": "",
+            "creation_date": "2013-10-22T04:34:57.906Z",
+            "application": 2,
+            "db_table": "",
+            "has_form_view": false,
+            "verbose_name": "",
+            "has_admin_view": true,
+            "is_in_menu": false,
+            "description": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "model.model",
+        "fields": {
+            "name": "Session",
+            "modification_date": "2013-10-22T04:35:25.959Z",
+            "has_read_only_view": false,
+            "verbose_name_plural": "",
+            "creation_date": "2013-10-22T04:35:22.924Z",
+            "application": 3,
+            "db_table": "",
+            "has_form_view": false,
+            "verbose_name": "",
+            "has_admin_view": true,
+            "is_in_menu": false,
+            "description": ""
+        }
+    }
+]

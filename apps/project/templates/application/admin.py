@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from apps.project.templates.application.models import *
+from models import *
 
 {% for model in application.models.all %}{% if model.has_admin_view %}
 class {{ model.name }}Admin(admin.ModelAdmin):

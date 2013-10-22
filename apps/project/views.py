@@ -87,8 +87,8 @@ def project_list(request):
     The result list is paginated
     """
     context = {}
-    projects = Project.objects.filter(owner=request.user).order_by(
-        "-creation_date")
+    projects = Project.objects.filter(
+        owner=request.user, is_sys=False).order_by("-creation_date")
     if request.method == "POST":
         form = NewProjectForm(request.POST, owner=request.user)
         if form.is_valid():

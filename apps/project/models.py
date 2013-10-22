@@ -14,6 +14,7 @@ class Project(models.Model):
         'model.Model', unique=True, blank=True, null=True)
 
     public = models.BooleanField(blank=True, default=False)
+    is_sys = models.BooleanField(blank=True, default=False)
 
     def __unicode__(self):
         return self.name

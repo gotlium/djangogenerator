@@ -3,3 +3,4 @@ django-extensions==1.2.4
 python-keyczar==0.7b
 django-registration==1.0
 django==1.4.8
+South-0.8.2

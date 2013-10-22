@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django import forms
 
 from apps.project.models import Project
@@ -13,11 +14,12 @@ class ProjectForm(forms.ModelForm):
         elif 'instance' in kwargs:
             self.owner = kwargs['instance'].owner
         else:
-            raise TypeError, 'owner is unknow'
+            raise TypeError, 'owner is unknown'
         super(ProjectForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
             self.fields['profile'].queryset = Model.objects.filter(
-                application__project=kwargs['instance'])
+                Q(application__project=kwargs['instance']) | Q(
+                    application__project__is_sys=True))
 
     class Meta:
         model = Project

@@ -19,6 +19,7 @@ class ModelField(models.Model):
         unique_together = (('model', 'content_type', 'object_id'),)
         verbose_name = _('model field')
         verbose_name_plural = _('model fields')
+        ordering = ('id',)
 
     def __unicode__(self):
         try:
@@ -31,18 +32,18 @@ class ModelField(models.Model):
 
 class Field(models.Model):
     name = models.CharField(max_length=255)
-    null = models.BooleanField(
-        default=False, help_text=docs('null'))
-    blank = models.BooleanField(default=False, help_text=docs('blank'))
+    verbose_name = models.CharField(
+        max_length=255, blank=True, help_text=docs('verbose-name'))
     default = models.CharField(
         max_length=255, blank=True, help_text=docs('default'))
     help_text = models.CharField(
         max_length=255, blank=True, help_text=docs('primary-key'))
+    null = models.BooleanField(
+        default=False, help_text=docs('null'))
+    blank = models.BooleanField(default=False, help_text=docs('blank'))
     primary_key = models.BooleanField(
         default=False, help_text=docs('primary-key'))
     unique = models.BooleanField(default=False, help_text=docs('unique'))
-    verbose_name = models.CharField(
-        max_length=255, blank=True, help_text=docs('verbose-name'))
     db_index = models.BooleanField(
         default=False, help_text=docs('db-index'))
 
@@ -66,8 +67,12 @@ class Field(models.Model):
             ):
                 value = self.__getattribute__(field.name)
                 if isinstance(value, (unicode, str)):
-                    option = '%s="%s"' % (
-                        field.name, value.replace('"', r'\"'))
+                    default = value in ('True', 'False') or value.isdigit()
+                    if field.name == 'default' and default:
+                        option = '%s=%s' % (field.name, value)
+                    else:
+                        option = '%s=u"%s"' % (
+                            field.name, value.replace('"', r'\"'))
                 else:
                     option = '%s=%s' % (field.name, value)
                 if field.name == 'relation':
