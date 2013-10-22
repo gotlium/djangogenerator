@@ -1,5 +1,6 @@
-import re 
+import re
 import unicodedata
+
 
 def slugify(value):
     """

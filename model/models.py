@@ -1,14 +1,12 @@
 from django.db import models
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes import generic
 
 from utils import slugify
 
+
 class Model(models.Model):
     name = models.CharField(max_length=255)
-    application = models.ForeignKey('application.Application', related_name='models')
+    application = models.ForeignKey('application.Application',
+                                    related_name='models')
     description = models.TextField(blank=True)
 
     # Meta options
@@ -33,10 +31,11 @@ class Model(models.Model):
         unicodes = self.model_fields.filter(object__unicode=True)
         return unicodes and unicodes[0] or False
 
+
 class Permissions(models.Model):
     model = models.ForeignKey(Model, related_name="permissions")
     name = models.CharField(max_length=55)
-    
+
     def __unicode__(self):
         return '("%s", "%s")' % (slugify(self.name), self.name)
 

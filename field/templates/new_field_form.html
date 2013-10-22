@@ -1,37 +1,43 @@
-<div class="field newfield" id="new_field_{{model.id}}">
-<div class="field_type" >New {{ field_type }}</div>
-<form id="new_field_form_{{ model.id }}" action="{% url new_model_field_form field_type model.id %}" method="post">
-{% for field in new_field_form %}
-<p>
-    {{ field.label_tag }} {{ field }} 
-    {% if field.help_text %}
-      <span onclick="window.open('{{field.help_text}}','djangohelp','menubar=1,resizable=1,width=470,height=300');" title="help" class="help">?</span>
-    {% endif %}
-    {% if field.errors %}
-        <span class="errors">
+<div class="field newfield" id="new_field_{{ model.id }}">
+  <div class="field_type">New {{ field_type }}</div>
+  <form id="new_field_form_{{ model.id }}"
+        action="{% url new_model_field_form field_type model.id %}"
+        method="post">
+    {% for field in new_field_form %}
+      <p>
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+          <span
+              onclick="window.open('{{ field.help_text }}','djangohelp','menubar=1,resizable=1,width=470,height=300');"
+              title="help" class="help">?</span>
+        {% endif %}
+        {% if field.errors %}
+          <span class="errors">
         {% for error in field.errors %}
-        {{ error }}
+          {{ error }}
         {% endfor %}
         </span>
-    {% endif %}
-    {% if forloop.first %}
-        <span class="loading" id="field_{{ model.id }}_loading"> &nbsp; </span>
-        <input type="submit" value="save and add this field" class="save"/>
-        <input type="button" class="delete" value="cancel" onclick="$(this).parents('.fields li').remove();" />
-    {% endif %}
-</p>
-{% endfor %}
-</form>
+        {% endif %}
+        {% if forloop.first %}
+          <span class="loading"
+                id="field_{{ model.id }}_loading"> &nbsp; </span>
+          <input type="submit" value="save and add this field" class="save"/>
+          <input type="button" class="delete" value="cancel"
+                 onclick="$(this).parents('.fields li').remove();"/>
+        {% endif %}
+      </p>
+    {% endfor %}
+  </form>
 </div>
 
 <script type="text/javascript">
-    // <![CDATA[
-    $("#new_field_form_{{ model.id }}").submit(function(){
-        $("#field_{{ model.id }}_loading").css({display:"inline-block"});
-        $(this).ajaxSubmit({target: $("#new_field_{{model.id}}").parent()});
-        return false;
-    });
-    $("#id_{{ field_type }}_{{ model.id }}-name").focus();
-    //]]>
+  // <![CDATA[
+  $("#new_field_form_{{ model.id }}").submit(function () {
+    $("#field_{{ model.id }}_loading").css({display: "inline-block"});
+    $(this).ajaxSubmit({target: $("#new_field_{{model.id}}").parent()});
+    return false;
+  });
+  $("#id_{{ field_type }}_{{ model.id }}-name").focus();
+  //]]>
 </script>
 

@@ -5,6 +5,7 @@ from model.utils import slugify
 
 from models import Application
 
+
 class ApplicationForm(forms.ModelForm):
     def __init__(self, project, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)
@@ -20,8 +21,10 @@ class ApplicationForm(forms.ModelForm):
 
         if not (self.instance and self.instance.name == name ):
             if Application.objects.filter(name=name, project=self.project):
-               raise ValidationError('%s is already in use in this project' % name)
+                raise ValidationError(
+                    '%s is already in use in this project' % name)
         return name
+
 
 class NewApplicationForm(ApplicationForm):
     class Meta:

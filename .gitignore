@@ -1,6 +1,7 @@
+local_settings.py
+.idea
 *.pyc
 *.log
-settings_local.py
 media
 src/*
 *.swp
@@ -8,3 +9,4 @@ common
 djangodblog
 backup*
 *.tgz
+db.sqlite

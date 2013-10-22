@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Application(models.Model):
     project = models.ForeignKey('project.Project', related_name='applications')
     name = models.CharField(max_length=255)
@@ -9,4 +9,3 @@ class Application(models.Model):
 
     def __unicode__(self):
         return self.name
-

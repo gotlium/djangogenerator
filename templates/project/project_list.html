@@ -3,7 +3,7 @@
 {% block content %}
     <div class="navigation clear">
     {% if projects.has_next %}
-        <div><a href="?{{url_parameters}}&page={{ projects.next_page_number }}" >&laquo; Older Entries </a></div>												
+        <div><a href="?{{url_parameters}}&page={{ projects.next_page_number }}" >&laquo; Older Entries </a></div>
     {% endif %}
     {% if projects.has_previous %}
         <div><a href="?{{url_parameters}}&page={{ projects.previous_page_number }}" >Newer Entries &raquo;</a></div>
@@ -37,11 +37,11 @@
 <script type="text/javascript">
     // <![CDATA[
     $('.delete_project').click(function(){
-        var del_object = confirm('Are you sure you want to delete this project ?'); 
+        var del_object = confirm('Are you sure you want to delete this project ?');
         var link = $(this);
         if ( del_object == true ){
             var del_url = $(this).attr('href');
-            $.post(del_url, function(data){ 
+            $.post(del_url, function(data){
                 link.parent('li').slideToggle();
             });
         }

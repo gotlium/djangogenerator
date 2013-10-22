@@ -1,64 +1,71 @@
 <div class="field" id="field_{{ model_field.id }}">
-<div class="field_toggle" id="collapse_field_{{ model_field.id }}">-</div>
-<div id="python_field_{{ model_field.id }}" class="python_field"> {{ model_field }} </div>
-<div class="field_type" >{{ model_field.object.field_type }}</div>
-<form class="field_form" id="field_form_{{ model_field.id }}" action="{% url model_field_form model_field.object.field_type model_field.id %}" method="post">
-{% for field in field_form %}
-<p>
-    {{ field.label_tag }} {{ field }} 
-    {% if field.help_text %}
-      <span onclick="window.open('{{field.help_text}}','djangohelp','menubar=1,resizable=1,width=470,height=300');" title="help" class="help">?</span>
-    {% endif %}
-    {% if field.errors %}
-        <span class="errors">
+  <div class="field_toggle" id="collapse_field_{{ model_field.id }}">-</div>
+  <div id="python_field_{{ model_field.id }}"
+       class="python_field"> {{ model_field }} </div>
+  <div class="field_type">{{ model_field.object.field_type }}</div>
+  <form class="field_form" id="field_form_{{ model_field.id }}"
+        action="{% url model_field_form model_field.object.field_type model_field.id %}"
+        method="post">
+    {% for field in field_form %}
+      <p>
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+          <span
+              onclick="window.open('{{ field.help_text }}','djangohelp','menubar=1,resizable=1,width=470,height=300');"
+              title="help" class="help">?</span>
+        {% endif %}
+        {% if field.errors %}
+          <span class="errors">
         {% for error in field.errors %}
-        {{ error }}
+          {{ error }}
         {% endfor %}
         </span>
-    {% endif %}
-    {% if forloop.first %}
-        <span class="loading" id="field_{{ model_field.id }}_loading"> &nbsp; </span>
-        <input type="submit" value="save field" class="save"/>
-        <input type="button" class="delete" value="delete" id="field_{{ model_field.id }}_delete"/>
-    {% if saved %}
-        <span id="model_field_{{ model_field.id }}_saved" class="saved">Saved</span>
-        <script type="text/javascript">
-            // <![CDATA[
-            $('#model_field_{{ model_field.id }}_saved').fadeIn('fast');
-            setTimeout("$('#model_field_{{ model_field.id }}_saved').fadeOut(2000);",1000)
-            // ]]>
-        </script>
-    {% endif %}
-    {% endif %}
-</p>
-{% endfor %}
-</form>
+        {% endif %}
+        {% if forloop.first %}
+          <span class="loading"
+                id="field_{{ model_field.id }}_loading"> &nbsp; </span>
+          <input type="submit" value="save field" class="save"/>
+          <input type="button" class="delete" value="delete"
+                 id="field_{{ model_field.id }}_delete"/>
+          {% if saved %}
+            <span id="model_field_{{ model_field.id }}_saved" class="saved">Saved</span>
+            <script type="text/javascript">
+              // <![CDATA[
+              $('#model_field_{{ model_field.id }}_saved').fadeIn('fast');
+              setTimeout("$('#model_field_{{ model_field.id }}_saved').fadeOut(2000);", 1000)
+              // ]]>
+            </script>
+          {% endif %}
+        {% endif %}
+      </p>
+    {% endfor %}
+  </form>
 </div>
 
 <script type="text/javascript">
-    // <![CDATA[
-    $("#field_{{ model_field.id }}_delete").click(function(){
-        var del_object = confirm('Are you sure you want to delete the field "{{ model_field.object.name }}" ?'); 
-        if ( del_object == true ){
-            $.post( "{% url model_field_del model_field.id %}", function(data){ 
-                $("#field_{{ model_field.id }}").slideToggle(); 
-                });
-            }
-        });
+  // <![CDATA[
+  $("#field_{{ model_field.id }}_delete").click(function () {
+    var del_object = confirm('Are you sure you want to delete the field "{{ model_field.object.name }}" ?');
+    if (del_object == true) {
+      $.post("{% url model_field_del model_field.id %}", function (data) {
+        $("#field_{{ model_field.id }}").slideToggle();
+      });
+    }
+  });
 
-    $("#collapse_field_{{ model_field.id }}").click(function(){
-        $("#field_form_{{ model_field.id }}").slideToggle();
-        $("#field_{{ model_field.id }} .field_type").toggle();
-        $("#python_field_{{ model_field.id }}").toggle();
-        var sign = $("#collapse_field_{{ model_field.id }}").html() 
-        $("#collapse_field_{{ model_field.id }}").html(sign === '+' ? '-' : '+');
-        return false;
-    });
+  $("#collapse_field_{{ model_field.id }}").click(function () {
+    $("#field_form_{{ model_field.id }}").slideToggle();
+    $("#field_{{ model_field.id }} .field_type").toggle();
+    $("#python_field_{{ model_field.id }}").toggle();
+    var sign = $("#collapse_field_{{ model_field.id }}").html()
+    $("#collapse_field_{{ model_field.id }}").html(sign === '+' ? '-' : '+');
+    return false;
+  });
 
-    $("#field_form_{{ model_field.id }}").submit(function(){
-        $("#field_{{ model_field.id }}_loading").css({display:"inline-block"});
-        $(this).ajaxSubmit({target: $("#field_{{model_field.id}}").parent()});
-        return false;
-    });
-    // ]]>
+  $("#field_form_{{ model_field.id }}").submit(function () {
+    $("#field_{{ model_field.id }}_loading").css({display: "inline-block"});
+    $(this).ajaxSubmit({target: $("#field_{{model_field.id}}").parent()});
+    return false;
+  });
+  // ]]>
 </script>

@@ -1,40 +1,41 @@
 {% for field in model_form %}
-<p>
-    {{ field.label_tag }} {{ field }} 
+  <p>
+    {{ field.label_tag }} {{ field }}
     {% if field.errors %}
-        <span class="errors">
+      <span class="errors">
         {% for error in field.errors %}
-        {{ error }}
+          {{ error }}
         {% endfor %}
         </span>
     {% endif %}
     {% if forloop.first %}
-        <span class="loading" id="model_{{ model.id }}_loading"> &nbsp; </span>
-        <input type="submit" value="save model" class="save"/>
-        <input type="button" class="delete" value="delete model" id="model_{{ model.id }}_delete" />
-    {% if saved %}
+      <span class="loading" id="model_{{ model.id }}_loading"> &nbsp; </span>
+      <input type="submit" value="save model" class="save"/>
+      <input type="button" class="delete" value="delete model"
+             id="model_{{ model.id }}_delete"/>
+      {% if saved %}
         <span id="model_{{ model.id }}_saved" class="saved">Saved</span>
         <script type="text/javascript">
-            // <![CDATA[
-            $('#model_{{ model.id }}_saved').fadeIn('fast');
-            setTimeout("$('#model_{{ model.id }}_saved').fadeOut(2000);",1000)
-            // ]]>
+          // <![CDATA[
+          $('#model_{{ model.id }}_saved').fadeIn('fast');
+          setTimeout("$('#model_{{ model.id }}_saved').fadeOut(2000);", 1000)
+          // ]]>
         </script>
+      {% endif %}
     {% endif %}
-    {% endif %}
-</p>
+  </p>
 {% endfor %}
 
 <script type="text/javascript">
-    // <![CDATA[
-    $("#model_{{ model.id }}_delete").click(function(){
-        var del_object = confirm('Are you sure you want to delete the model "{{ model.name }}" ?'); 
-        if ( del_object == true ){
-            $.post( "{% url model_del model.id %}", function(data){ 
-                $("#model_{{ model.id }}").slideToggle(); 
-                });
-            }
-        });
-    // ]]>
+  // <![CDATA[
+  $("#model_{{ model.id }}_delete").click(function () {
+    var del_object = confirm('Are you sure you want to delete the model "{{ model.name }}" ?');
+    if (del_object == true) {
+      $.post("{% url model_del model.id %}", function (data) {
+        $("#model_{{ model.id }}").slideToggle();
+      });
+    }
+  });
+  // ]]>
 </script>
 

@@ -9,14 +9,15 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-from common.shortcuts import render_response
-from common.utils import paginate
+from django.shortcuts import render as render_response
+from django.core.paginator import Paginator
 
 from models import Project
 from forms import NewProjectForm, ProjectForm
 from application.forms import NewApplicationForm
 
 from field.models import ModelField
+
 
 def public_project_view(request, project_id):
     """
@@ -27,9 +28,11 @@ def public_project_view(request, project_id):
         project = get_object_or_404(Project, pk=project_id)
     else:
         project = get_object_or_404(Project, public=True, pk=project_id)
-    
+
     context = {'project': project}
-    return render_response(request, 'project/public_project_view.html', context)
+    return render_response(
+        request, 'project/public_project_view.html', context)
+
 
 def public_project_list(request):
     """
@@ -38,8 +41,10 @@ def public_project_list(request):
     """
     context = {}
     projects = Project.objects.filter(public=True).order_by("-creation_date")
-    context['projects'] = paginate(projects, request)
-    return render_response(request, 'project/public_project_list.html', context) 
+    context['projects'] = Paginator(projects, 25)
+    return render_response(
+        request, 'project/public_project_list.html', context)
+
 
 @login_required
 def project_view(request, project_id):
@@ -58,11 +63,13 @@ def project_view(request, project_id):
             form.save()
     else:
         form = ProjectForm(instance=project)
-    
+
     context = {'project': project,
-               'new_application_form': NewApplicationForm({'project_id':project.id}, prefix='new_application'),
+               'new_application_form': NewApplicationForm(
+                   {'project_id': project.id}, prefix='new_application'),
                'project_form': form}
     return render_response(request, 'project/project_view.html', context)
+
 
 @login_required
 def project_del(request, project_id):
@@ -74,6 +81,7 @@ def project_del(request, project_id):
     project.delete()
     return HttpResponse("deleted")
 
+
 @login_required
 def project_list(request):
     """
@@ -81,7 +89,8 @@ def project_list(request):
     The result list is paginated
     """
     context = {}
-    projects = Project.objects.filter(owner=request.user).order_by("-creation_date")
+    projects = Project.objects.filter(owner=request.user).order_by(
+        "-creation_date")
     if request.method == "POST":
         form = NewProjectForm(request.POST, owner=request.user)
         if form.is_valid():
@@ -90,9 +99,10 @@ def project_list(request):
             new_project.save()
     else:
         form = NewProjectForm(owner=request.user)
-    context['projects'] = paginate(projects, request)
+    context['projects'] = Paginator(projects, 25)
     context['new_project_form'] = form
-    return render_response(request, 'project/project_list.html', context) 
+    return render_response(request, 'project/project_list.html', context)
+
 
 def generate(template, output, context={}):
     """
@@ -100,34 +110,39 @@ def generate(template, output, context={}):
     """
     content = render_to_string(template, context)
     try:
-        file = open(output, 'w+')
+        f = open(output, 'w+')
+        f.write(content.encode('utf-8'))
+        f.close()
     except IOError:
-        import pdb; pdb.set_trace()
-    file.write(content.encode('utf-8'))
-    file.close()
+        import pdb
+        pdb.set_trace()
+
 
 @login_required
 def project_generate(request, project_id):
-    return _project_generate(request=request, project_id=project_id, owner=request.user)
+    return _project_generate(
+        request=request, project_id=project_id, owner=request.user)
+
 
 def public_project_generate(request, project_id):
     return _project_generate(request=request, project_id=project_id)
+
 
 def _project_generate(request, project_id, owner=None):
     """
     Generate the whole project in a temp folder,
     compress it and move the compressed file to media folder.
     """
-    project_kwargs = {'pk':project_id}
+    project_kwargs = {'pk': project_id}
     if owner:
         project_kwargs['owner'] = owner
     else:
-         project_kwargs['public'] = True
+        project_kwargs['public'] = True
     project = get_object_or_404(Project, **project_kwargs)
     secret_key = hashlib.sha224('%f' % random.random()).hexdigest()
     context = {'project': project,
                'secret_key': secret_key}
-    
+
     # make the output folder
     output_folder = mktemp()
     os.mkdir(output_folder)
@@ -136,11 +151,13 @@ def _project_generate(request, project_id, owner=None):
     generate('urls.py', os.path.join(output_folder, 'urls.py'), context)
 
     # generate __init__ file
-    generate('__init__.py', os.path.join(output_folder, '__init__.py'), context)
+    generate('__init__.py', os.path.join(output_folder, '__init__.py'),
+             context)
 
 
     # generate the settings(_local) files and save them
-    generate('settings.py', os.path.join(output_folder, 'settings.py'), context)
+    generate('settings.py', os.path.join(output_folder, 'settings.py'),
+             context)
 
     # generate the manage.py file
     generate('manage.py', os.path.join(output_folder, 'manage.py'), context)
@@ -149,22 +166,25 @@ def _project_generate(request, project_id, owner=None):
     #generate base template
     templates_folder = os.path.join(output_folder, 'templates')
     os.mkdir(templates_folder)
-    generate('templates/base.html', os.path.join(templates_folder, 'base.html'), context)
-    generate('templates/homepage.html', os.path.join(templates_folder, 'homepage.html'), context)
+    generate('templates/base.html',
+             os.path.join(templates_folder, 'base.html'), context)
+    generate('templates/homepage.html',
+             os.path.join(templates_folder, 'homepage.html'), context)
 
     # generate registration templates if necessary
     registration_folder = os.path.join(templates_folder, 'registration')
     os.mkdir(registration_folder)
-    registration_templates = ['login.html', 
-                              'password_change_done.html', 
-                              'password_change_form.html', 
-                              'password_reset_complete.html', 
+    registration_templates = ['login.html',
+                              'password_change_done.html',
+                              'password_change_form.html',
+                              'password_reset_complete.html',
                               'password_reset_confirm.html',
                               'password_reset_done.html',
                               'password_reset_email.html',
-                              'password_reset_form.html',]
+                              'password_reset_form.html', ]
     for filename in registration_templates:
-        generate('templates/registration/%s' % filename, os.path.join(registration_folder, filename), context)
+        generate('templates/registration/%s' % filename,
+                 os.path.join(registration_folder, filename), context)
 
     # generate media
     media_folder = os.path.join(output_folder, 'media')
@@ -176,7 +196,8 @@ def _project_generate(request, project_id, owner=None):
                  'reset.css',
                  'print.css']
     for filename in css_files:
-        generate('media/css/%s' % filename, os.path.join(css_folder, filename), context)
+        generate('media/css/%s' % filename, os.path.join(css_folder, filename),
+                 context)
 
     for application in project.applications.all():
         # make sure we don't generate empty models
@@ -184,7 +205,8 @@ def _project_generate(request, project_id, owner=None):
             continue
         context.update({'application': application})
         application_folder = os.path.join(output_folder, application.name)
-        templates_folder = os.path.join(output_folder, '%s/templates' % application.name)
+        templates_folder = os.path.join(output_folder,
+                                        '%s/templates' % application.name)
 
         # generate the application folder
         os.mkdir(application_folder)
@@ -193,23 +215,29 @@ def _project_generate(request, project_id, owner=None):
         os.mkdir(templates_folder)
 
         # generate models
-        generate('application/models.py', os.path.join(application_folder, 'models.py'), context)
+        generate('application/models.py',
+                 os.path.join(application_folder, 'models.py'), context)
 
         # generate views
-        generate('application/views.py', os.path.join(application_folder, 'views.py'), context)
+        generate('application/views.py',
+                 os.path.join(application_folder, 'views.py'), context)
 
         # generate forms
-        generate('application/forms.py', os.path.join(application_folder, 'forms.py'), context)
+        generate('application/forms.py',
+                 os.path.join(application_folder, 'forms.py'), context)
 
         # generate urls
-        generate('application/urls.py', os.path.join(application_folder, 'urls.py'), context)
-        
+        generate('application/urls.py',
+                 os.path.join(application_folder, 'urls.py'), context)
+
         # generate admin
-        generate('application/admin.py', os.path.join(application_folder, 'admin.py'), context)
-        
+        generate('application/admin.py',
+                 os.path.join(application_folder, 'admin.py'), context)
+
         # generate __init__
-        generate('application/__init__.py', os.path.join(application_folder, '__init__.py'), context)
-        
+        generate('application/__init__.py',
+                 os.path.join(application_folder, '__init__.py'), context)
+
         for model in application.models.all():
             # make sure we don't generate empty models
             if not model.model_fields.all():
@@ -218,17 +246,30 @@ def _project_generate(request, project_id, owner=None):
 
             # generate the read only view
             if model.has_read_only_view:
-                generate('application/templates/view.html', os.path.join(templates_folder, '%s_view.html' % model.name.lower()), context)
+                generate('application/templates/view.html',
+                         os.path.join(templates_folder,
+                                      '%s_view.html' % model.name.lower()),
+                         context)
 
             # generate the form view
             if model.has_form_view:
-                generate('application/templates/form.html', os.path.join(templates_folder, '%s_form.html' % model.name.lower()), context)
+                generate('application/templates/form.html',
+                         os.path.join(templates_folder,
+                                      '%s_form.html' % model.name.lower()),
+                         context)
 
             if model.has_read_only_view or model.has_form_view:
-                generate('application/templates/list.html', os.path.join(templates_folder, '%s_list.html' % model.name.lower()), context)
-                generate('application/templates/base.html', os.path.join(templates_folder, '%s_base.html' % model.name.lower()), context)
+                generate('application/templates/list.html',
+                         os.path.join(templates_folder,
+                                      '%s_list.html' % model.name.lower()),
+                         context)
+                generate('application/templates/base.html',
+                         os.path.join(templates_folder,
+                                      '%s_base.html' % model.name.lower()),
+                         context)
 
     tgz_filename = '%d_%d.tgz' % (project.id, project.owner.id)
     #TODO: clean the temp folder using cron
-    os.system('cd %s && tar czf %s * && mv %s %s ' % (output_folder, tgz_filename, tgz_filename, settings.MEDIA_ROOT))
+    os.system('cd %s && tar czf %s * && mv %s %s ' % (
+        output_folder, tgz_filename, tgz_filename, settings.MEDIA_ROOT))
     return HttpResponseRedirect('%s%s' % (settings.MEDIA_URL, tgz_filename))
