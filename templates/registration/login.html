@@ -3,41 +3,55 @@
 {% block content %}
 
 
-<div class="box_form" id="login_div">
-<p>
-DjangoGenerator allows you to quiclky and efficiently start your django project by providing you a skeleton that fits your data model.
-</p>
-<p>
-See Django Generator in action in this <a href="{% url screenshot %}" title="DjangoGenerator Screenshot">Screenshot</a>
-</p>
-<p>
-You can also checkout some <a href="{% url public_project_list %}">Public projects</a>
-</p>
-<p>
-Test account: <strong>welcome</strong> as username and <strong>test</strong> as password.
-</p>
-{% if form.errors %}
-<p style="color: red">Your username and password didn't match. Please try again.</p>
-{% endif %}
-<form method="post" action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
-<p>
-    {{ form.username.label_tag }}
-    {{ form.username }}
-</p>
-<p>
-    {{ form.password.label_tag }}
-    {{ form.password }}
-</p>
-<p>
-<a href="{% url django.contrib.auth.views.password_reset %}">reset password</a>
-<a href="{% url registration.backends.default.urls.register %}">Register</a>
-</p>
+  <div class="box_form" id="login_div">
+    <p>
+      DjangoGenerator allows you to quiclky and efficiently start your django
+      project by providing you a skeleton that fits your data model.
+    </p>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-</div>
-<script type="text/javascript">
+    <p>
+      See Django Generator in action in this
+      <a href="{% url screenshot %}" title="DjangoGenerator Screenshot">
+        Screenshot
+      </a>
+    </p>
+
+    <p>
+      You can also checkout some
+      <a href="{% url public_project_list %}">
+        Public projects
+      </a>
+    </p>
+
+    <p>
+      Test account: <strong>welcome</strong> as username and
+      <strong>test</strong> as password.
+    </p>
+    {% if form.errors %}
+      <p style="color: red">Your username and password didn't match. Please try
+        again.</p>
+    {% endif %}
+    <form method="post" action="{% url auth_login %}">{% csrf_token %}
+      <p>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </p>
+
+      <p>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </p>
+
+      <p>
+        <a href="{% url auth_password_reset %}">reset password</a>
+        <a href="{% url registration_register %}">Register</a>
+      </p>
+
+      <input type="submit" value="login"/>
+      <input type="hidden" name="next" value="{{ next }}"/>
+    </form>
+  </div>
+  <script type="text/javascript">
     $("#id_username").focus();
-</script>
+  </script>
 {% endblock %}

@@ -16,11 +16,11 @@ DATABASES = {
     },
 }
 
+PROJECT_PATH = os.path.normpath(os.path.dirname(__file__))
+
 TIME_ZONE = 'America/Chicago'
 
-SECRET_KEY = 'rw7rga&j___)rneuddc=jc!6vlkueal1z($yt8xw^6+&(c0b13'
-
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+SECRET_KEY = 'f&amp;qqn^!buj-m7*g0g1za8-+g3u+le9hpmktng(yp*1^-z+'
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -34,8 +34,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = ''
+if not DEBUG:
+    STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -78,13 +84,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'project',
-    'model',
-    'field',
-    'form',
-    'application',
+
     'registration',
     'django_extensions',
+
+    'apps.project',
+    'apps.model',
+    'apps.field',
+    'apps.form',
+    'apps.application',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7

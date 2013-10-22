@@ -1,5 +1,3 @@
-import os
-
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
@@ -8,20 +6,17 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    (r'^field/', include('field.urls')),
-    (r'^model/', include('model.urls')),
-    (r'^application/', include('application.urls')),
-    (r'^project/', include('project.urls')),
-    (r'^form/', include('form.urls')),
+    (r'^field/', include('apps.field.urls')),
+    (r'^model/', include('apps.model.urls')),
+    (r'^application/', include('apps.application.urls')),
+    (r'^project/', include('apps.project.urls')),
+    (r'^form/', include('apps.form.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 
-    url(r'^logout/$',
-        'django.contrib.auth.views.logout_then_login',
+    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login',
         name='logout_then_login'),
-    (r'^accounts/',
-     include('registration.backends.default.urls')),
-
+    (r'^accounts/', include('registration.urls')),
 )
 
 urlpatterns += patterns(
@@ -33,11 +28,9 @@ urlpatterns += patterns(
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns(
-        '',
-        (r'^static/(?P<path>.*)$',
-         'django.views.static.serve', {
-            'document_root': os.path.join(settings.PROJECT_PATH, 'static/')}),
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': os.path.join(settings.PROJECT_PATH, 'media/')}),
-    )
+    from django.conf.urls.static import static
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += staticfiles_urlpatterns()
