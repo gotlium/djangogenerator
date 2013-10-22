@@ -11,4 +11,3 @@ urlpatterns = patterns(
     url(r'add/(?P<model_id>\d+)/$', 'new_model_form_form',
         name='new_model_form_form'),
 )
-

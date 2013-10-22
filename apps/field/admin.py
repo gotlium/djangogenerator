@@ -1,32 +1,6 @@
 from django.contrib import admin
-from models import *
+from apps.field import models
 
-
-admin.site.register(ModelField)
-admin.site.register(OneToOneField)
-admin.site.register(ForeignKeyField)
-admin.site.register(ManyToManyField)
-admin.site.register(CharField)
-admin.site.register(TextField)
-admin.site.register(AutoField)
-admin.site.register(BigIntegerField)
-admin.site.register(BooleanField)
-admin.site.register(CommaSeparatedIntegerField)
-admin.site.register(DateField)
-admin.site.register(DateTimeField)
-admin.site.register(DecimalField)
-admin.site.register(EmailField)
-admin.site.register(FileField)
-admin.site.register(FilePathField)
-admin.site.register(FloatField)
-admin.site.register(ImageField)
-admin.site.register(IntegerField)
-admin.site.register(IPAddressField)
-admin.site.register(NullBooleanField)
-admin.site.register(PositiveIntegerField)
-admin.site.register(PositiveSmallIntegerField)
-admin.site.register(SlugField)
-admin.site.register(SmallIntegerField)
-admin.site.register(TimeField)
-admin.site.register(URLField)
-admin.site.register(XMLField)
+for mem in dir(models):
+    if not mem.startswith('Field') and mem.endswith('Field'):
+        admin.site.register(getattr(models, mem))

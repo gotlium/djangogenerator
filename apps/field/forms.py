@@ -55,12 +55,12 @@ class FieldForm(forms.ModelForm):
         name = self.cleaned_data["name"]
         name = slugify(name).lower()
 
-        if not (self.instance and self.instance.name == name ):
+        if not (self.instance and self.instance.name == name):
             for model_field in ModelField.objects.filter(
                     model=self.model).select_related():
-                # first test ensure name has been changed. 
-                # So it should not exist on any other object in this model.
                 if model_field.object.name == name:
+                    # first test ensure name has been changed.
+                    # So it should not exist on any other object in this model.
                     raise ValidationError(
                         '%s is already in use in this model' % name)
         return name

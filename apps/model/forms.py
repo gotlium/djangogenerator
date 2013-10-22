@@ -50,4 +50,3 @@ class NewModelForm(ModelForm):
     class Meta:
         model = Model
         fields = ('name',)
-

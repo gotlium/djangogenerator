@@ -21,4 +21,3 @@ def new_model_form(application):
     form = NewModelForm(application=application,
                         prefix="new_model_%d" % application.id)
     return {'new_model_form': form, 'application': application}
-

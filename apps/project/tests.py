@@ -41,14 +41,14 @@ class ProjectTest(TestCase):
         """
         project = Project.objects.get(owner__username=self.username)
 
-        create_project_url = reverse(
-            'project_list')#, kwargs={'project_name': project.name})
+        create_project_url = reverse('project_list')
         self.connect_user()
 
-        post_opts_list = [{'name': project.name},
-                          {'name': ' %s' % project.name},
-                          {'name': '%s ' % project.name},
-                          {'name': '    %s     ' % project.name},
+        post_opts_list = [
+            {'name': project.name},
+            {'name': ' %s' % project.name},
+            {'name': '%s ' % project.name},
+            {'name': '    %s     ' % project.name},
         ]
         for post_opts in post_opts_list:
             response = self.client.post(create_project_url, post_opts)
@@ -80,7 +80,6 @@ class ProjectTest(TestCase):
 
         # check that object doesn't exist anymore
         self.assertEqual(Project.objects.filter(pk=project.id).count(), 0L)
-
 
     def test_project_list_view(self):
         from apps.project.forms import NewProjectForm
@@ -118,9 +117,9 @@ class ProjectTest(TestCase):
         projects = Project.objects.filter(owner__username=self.username)
         project = projects[0]
 
-        generate_project_url = reverse('project_generate',
-                                       kwargs={'project_id': project.id})
-        response = self.client.post(generate_project_url)
+        generate_project_url = reverse(
+            'project_generate', kwargs={'project_id': project.id})
+        self.client.post(generate_project_url)
 
         models = Model.objects.filter(application__project=project)
         model = models[0]
@@ -130,7 +129,7 @@ class ProjectTest(TestCase):
         # ensure it's working using a field with an unicode name
         generate_project_url = reverse('project_generate',
                                        kwargs={'project_id': project.id})
-        response = self.client.post(generate_project_url)
+        self.client.post(generate_project_url)
 
     def insert_field(self, model, name='test_field', field_type='CharField',
                      **options):
@@ -154,8 +153,9 @@ class ProjectTest(TestCase):
 
         # create the field
         response = self.client.post(new_model_field_url, options)
-        self.assertTrue(response.context.has_key('model_field'),
-                        'Field creation failed with options %s' % options)
+        self.assertTrue(
+            'model_field' in response.context,
+            'Field creation failed with options %s' % options)
 
         # get the last created model field
         return response.context['model_field']
@@ -221,5 +221,3 @@ class ProjectTest(TestCase):
         # test contained field doesn't exist anymore
         self.assertTrue(CharField.objects.filter(pk=field.id).count() == 0,
                         'field linked to model_field has not been deleted')
-
-

@@ -14,7 +14,7 @@ class ProjectForm(forms.ModelForm):
         elif 'instance' in kwargs:
             self.owner = kwargs['instance'].owner
         else:
-            raise TypeError, 'owner is unknown'
+            raise TypeError('owner is unknown')
         super(ProjectForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
             self.fields['profile'].queryset = Model.objects.filter(
@@ -31,7 +31,7 @@ class ProjectForm(forms.ModelForm):
     def clean_name(self):
         name = self.cleaned_data["name"].strip()
 
-        if not (self.instance and self.instance.name == name ):
+        if not (self.instance and self.instance.name == name):
             if Project.objects.filter(name=name, owner=self.owner):
                 raise ValidationError('%s already exists' % name)
         return name

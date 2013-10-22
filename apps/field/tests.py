@@ -75,7 +75,8 @@ class FieldTest(TestCase):
 
         choices = (
             ('option 1, option 2, another option',
-             '(("option 1","option 1"),("option 2","option 2"),("another option","another option"))'),
+             '(("option 1","option 1"),("option 2","option 2"),'
+             '("another option","another option"))'),
             ('option "here"',
              '(("option \\\"here\\\"","option \\\"here\\\""))'),
             ('option',
@@ -92,40 +93,38 @@ class FieldTest(TestCase):
             choices_option = u'choices=%s' % choices_output
             self.assertTrue(choices_option in model_field.object.get_options(),
                             '%s not found in %s' % (
-                            choices_option, model_field.object.get_options()))
+                                choices_option,
+                                model_field.object.get_options()))
             model_field.delete()
 
     def test_field_name_is_unique(self):
         """
-        It is not possible to create two fields with the same name 
-        within the same model 
+        It is not possible to create two fields with the same name
+        within the same model
         """
         field_name = 'my_test_field'
-        field_type_1 = 'CharField'
-        field_type_2 = 'IntegerField'
         model = Model.objects.all()[0]
 
         self.connect_user()
 
         # the first field creation must succeed
-        response = self.insert_field(model, max_length=255,
-                                     field_type='CharField', name=field_name)
+        response = self.insert_field(
+            model, max_length=255, field_type='CharField', name=field_name)
         self.failUnlessEqual(response.status_code, 200)
         self.assertEqual(CharField.objects.filter(name=field_name).count(), 1L)
 
         # the second field creation must fail
-        response = self.insert_field(model, max_length=255,
-                                     field_type='CharField', name=field_name)
+        response = self.insert_field(
+            model, max_length=255, field_type='CharField', name=field_name)
         self.failUnlessEqual(response.status_code, 200)
         self.assertEqual(CharField.objects.filter(name=field_name).count(), 1L)
 
         # ... even if it is another field type
-        response = self.insert_field(model, default=0,
-                                     field_type='IntegerField',
-                                     name=field_name)
+        response = self.insert_field(
+            model, default=0, field_type='IntegerField', name=field_name)
         self.failUnlessEqual(response.status_code, 200)
-        self.assertEqual(IntegerField.objects.filter(name=field_name).count(),
-                         0L)
+        self.assertEqual(
+            IntegerField.objects.filter(name=field_name).count(), 0L)
 
     def test_field_creation_same_name_different_model(self):
         """
@@ -138,8 +137,8 @@ class FieldTest(TestCase):
         self.connect_user()
         model = Model.objects.all()[0]
 
-        create_model_url = reverse('new_model_form', kwargs={
-        'application_id': model.application.id})
+        create_model_url = reverse(
+            'new_model_form', kwargs={'application_id': model.application.id})
 
         # get the form prefix
         response = self.client.post(create_model_url)
@@ -155,8 +154,8 @@ class FieldTest(TestCase):
         self.assertEqual(CharField.objects.filter(name=field_name).count(), 0L)
 
         # we create a new field in a model
-        respones = self.insert_field(model, max_length=255,
-                                     field_type=field_type, name=field_name)
+        self.insert_field(
+            model, max_length=255, field_type=field_type, name=field_name)
         self.failUnlessEqual(response.status_code, 200)
         self.assertEqual(CharField.objects.filter(name=field_name).count(), 1L)
 
@@ -182,4 +181,4 @@ class FieldTest(TestCase):
             self.assertTrue(
                 casted == response.context['model_field'].object.name,
                 'Error field name casting ("%s != %s")' % (
-                casted, response.context['model_field'].object.name))
+                    casted, response.context['model_field'].object.name))

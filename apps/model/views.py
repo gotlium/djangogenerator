@@ -49,7 +49,7 @@ def model_form(request, model_id):
 def new_model_form(request, application_id):
     """
     Create a new model inside an application.
-    return 404 if 
+    return 404 if
     """
     application = get_object_or_404(Application, project__owner=request.user,
                                     pk=application_id)
@@ -70,4 +70,3 @@ def new_model_form(request, application_id):
                             prefix="new_model_%d" % application.id)
     context.update({'new_model_form': form, 'application': application})
     return render_response(request, 'new_model_form.html', context)
-

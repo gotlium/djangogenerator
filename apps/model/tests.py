@@ -35,8 +35,8 @@ class ModelTest(TestCase):
 
     def test_model_name_is_unique(self):
         """
-        It is not possible to create two models with the same name 
-        within the same application 
+        It is not possible to create two models with the same name
+        within the same application
         """
         project = Project.objects.get(owner__username=self.username)
         application = project.applications.all()[0]
@@ -59,14 +59,13 @@ class ModelTest(TestCase):
         # check that the objects has not been created
         self.assertEquals(
             Model.objects.filter(application=application).count(), 1L,
-            'The view must not accept to create two models with the same name in the same application')
+            'The view must not accept to create two models with the '
+            'same name in the same application')
 
         # check the error presence
-        self.assertFormError(response,
-                             'new_model_form',
-                             'name',
-                             '%s is already in use in this application' % model.name)
-
+        self.assertFormError(
+            response, 'new_model_form', 'name',
+            '%s is already in use in this application' % model.name)
 
     def test_model_creation(self):
         self.connect_user()
@@ -117,9 +116,10 @@ class ModelTest(TestCase):
         # check response
         self.failUnlessEqual(response.status_code, 200)
 
-        # we create a new model in this application using an existing model name
-        create_model_url = reverse('new_model_form', kwargs={
-        'application_id': new_application.id})
+        # we create a new model in this application using an
+        # existing model name
+        create_model_url = reverse(
+            'new_model_form', kwargs={'application_id': new_application.id})
 
         # get the form prefix
         response = self.client.post(create_model_url)
@@ -136,7 +136,6 @@ class ModelTest(TestCase):
                                       name=model.name)
         self.assertEqual(models.count(), 2L,
                          'The model has not been created by the view')
-
 
     def test_model_name_casting_to_CamelCase(self):
         name_collection = {'This is the name ': 'ThisIsTheName',

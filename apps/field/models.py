@@ -83,8 +83,8 @@ class Field(models.Model):
                 elif field.name == 'choices':
                     choices = ['("%s","%s")' % (
                         choice.strip().replace('"', r'\"'),
-                        choice.strip().replace('"', r'\"')) for choice in
-                               value.split(',')]
+                        choice.strip().replace('"', r'\"'))
+                        for choice in value.split(',')]
                     options.append('choices=(%s)' % ','.join(choices))
                 else:
                     options.append(option)

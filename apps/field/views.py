@@ -70,7 +70,7 @@ def model_field_form(request, field_type, model_field_id):
             model_field.model, request.POST, prefix=prefix,
             instance=model_field.object)
         if form.is_valid():
-            field = form.save()
+            form.save()
             form = FIELD_FORMS[model_field.object.field_type](
                 model_field.model, instance=model_field.object, prefix=prefix)
             context['saved'] = True

@@ -49,7 +49,8 @@ def project_view(request, project_id):
     """
     - return project corresponding to project_id
     - handle project modification form submition
-    - raise 404 if project is not found or project doesn't belong to the current user
+    - raise 404 if project is not found or project doesn't belong to
+    the current user
     """
     if request.user.is_superuser:
         project = get_object_or_404(Project, pk=project_id)
@@ -151,7 +152,6 @@ def _project_generate(request, project_id, owner=None):
     # generate __init__ file
     generate('__init__.py', os.path.join(output_folder, '__init__.py'),
              context)
-
 
     # generate the settings(_local) files and save them
     generate('settings.py', os.path.join(output_folder, 'settings.py'),

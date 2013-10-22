@@ -11,8 +11,7 @@ from apps.project.models import Project
 @login_required
 def application_view(request, application_id):
     application = get_object_or_404(
-        Application, project__owner=request.user,
-                                    pk=application_id)
+        Application, project__owner=request.user, pk=application_id)
     context = {'application': application}
     return render_response(request, 'application_view.html', context)
 

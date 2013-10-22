@@ -10,7 +10,7 @@ from apps.form.forms import *
 @login_required
 def model_form_form(request, model_form_id):
     """
-    Allow update of a given ModelForm. 
+    Allow update of a given ModelForm.
     Current user must own the destination model.
     """
     model_form = get_object_or_404(
@@ -52,7 +52,7 @@ def new_model_form_form(request, model_id):
     Create a new ModelForm if the form is valid, otherwise display the
     initial form.
     Current user must own the destination model.
-    If a new ModelForm is created, the template will use ajax to render it 
+    If a new ModelForm is created, the template will use ajax to render it
     and append it to the FormList.
     """
     model = get_object_or_404(Model, pk=model_id,
