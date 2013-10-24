@@ -9,4 +9,4 @@ common
 djangodblog
 backup*
 *.tgz
-db.sqlite
+*.sqlite

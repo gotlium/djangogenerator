@@ -27,9 +27,9 @@ class FieldTest(TestCase):
         options are passed to the creation view and used to generate the field.
         """
         options.update({'name': name})
-        new_model_field_url = reverse('new_model_field_form',
-                                      kwargs={'field_type': field_type,
-                                              'model_id': model.id})
+        new_model_field_url = reverse(
+            'new_model_field_form',
+            kwargs={'field_type': field_type, 'model_id': model.id})
 
         # get the form prefix
         response = self.client.post(new_model_field_url)

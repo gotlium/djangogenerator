@@ -12,10 +12,18 @@ class {{ model.name }}(models.Model):
     {% for model_field in model.model_fields.all %}
     {{ model_field.object|safe }}{% endfor %}
     {% if project.profile == model %}user = models.OneToOneField(User){% endif %}
-{% if model.verbose_name or model.verbose_name_plural %}
+{% if model.verbose_name or model.verbose_name_plural or model.get_latest_by or model.managed or model.ordering or model.unique_together.all|length > 1 or model.index_together.all|length > 1 %}
     class Meta:
-{% if model.verbose_name %}      verbose_name = '{{ model.verbose_name }}'{% endif %}
-{% if model.verbose_name_plural %}      verbose_name_plural = '{{ model.verbose_name_plural }}'{% endif %}
+{% if model.verbose_name %}      verbose_name = u'{{ model.verbose_name }}'{% endif %}
+{% if model.verbose_name_plural %}      verbose_name_plural = u'{{ model.verbose_name_plural }}'{% endif %}
+
+{% if model.get_latest_by %}      get_latest_by = '{{ model.get_latest_by.object.name }}'{% endif %}
+{% if not model.managed %}      managed = False{% endif %}
+{% if model.ordering %}      ordering = ('{{ model.ordering.object.name }}',){% endif %}
+{% if model.unique_together.all|length > 1 %}      unique_together = (({% for row in model.unique_together.all %}"{{row.object.name}}",{% endfor %}),){% endif %}
+{% if model.index_together.all|length > 1 %}      index_together = (({% for row in model.index_together.all %}"{{row.object.name}}",{% endfor %}),){% endif %}
+
+
 {% endif %}
 {% if model.has_read_only_view or model.has_form_view %}
     @models.permalink

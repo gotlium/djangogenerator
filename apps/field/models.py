@@ -30,6 +30,14 @@ class ModelField(models.Model):
             )
 
 
+class ModelFieldProxy(ModelField):
+    class Meta:
+        proxy = True
+
+    def __unicode__(self):
+        return self.object.name
+
+
 class Field(models.Model):
     name = models.CharField(max_length=255)
     verbose_name = models.CharField(
@@ -46,6 +54,7 @@ class Field(models.Model):
     unique = models.BooleanField(default=False, help_text=docs('unique'))
     db_index = models.BooleanField(
         default=False, help_text=docs('db-index'))
+    editable = models.BooleanField(default=True, help_text=docs('editable'))
 
     ignored_options = (
         'unicode', 'filefield_ptr', 'datefield_ptr', 'name', 'id')
