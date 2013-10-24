@@ -52,5 +52,23 @@
             "is_in_menu": false,
             "description": ""
         }
+    },
+    {
+        "pk": 4,
+        "model": "model.model",
+        "fields": {
+            "name": "Contenttype",
+            "modification_date": "2013-10-22T04:35:25.959Z",
+            "has_read_only_view": false,
+            "verbose_name_plural": "",
+            "creation_date": "2013-10-22T04:35:22.924Z",
+            "application": 4,
+            "db_table": "",
+            "has_form_view": false,
+            "verbose_name": "",
+            "has_admin_view": true,
+            "is_in_menu": false,
+            "description": ""
+        }
     }
 ]

@@ -14,6 +14,7 @@
     </div>
     <div id="collapse_all">- Collapse All</div>
     <div id="expand_all">+ Expand All</div>
+    <div class="ask_exit"><input type="checkbox" id="ask_exit">Ask on exit</div>
     <div id="project_{{ project.id }}" class="project_form">
     <form action="" method="post">
         <p>
@@ -54,7 +55,6 @@
         $("#expand_all").show();
         $("#collapse_all").hide();
     });
-    // ]]>
 </script>
 
 {% endblock content %}

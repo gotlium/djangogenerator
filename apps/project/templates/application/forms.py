@@ -2,7 +2,7 @@
 
 from django import forms
 
-from apps.project.templates.application.models import *
+from models import *
 
 {% for model in application.models.all %}
 class {{ model.name }}Form(forms.ModelForm):

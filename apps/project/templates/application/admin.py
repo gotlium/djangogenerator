@@ -20,7 +20,7 @@ class {{ model.name }}Admin(admin.ModelAdmin):
 {% if model.admin_filter_vertical.all|length > 0 %}      filter_vertical = ({% for row in model.admin_filter_vertical.all %}'{{ row.object.name }}',{% endfor %}){% endif %}
 {% if model.admin_search_fields.all|length > 0 %}      search_fields = ({% for row in model.admin_search_fields.all %}'{{ row.object.name }}',{% endfor %}){% endif %}
 {% if model.admin_ordering.all|length > 0 %}      ordering = ({% for row in model.admin_ordering.all %}'{{ row.object.name }}',{% endfor %}){% endif %}
-{% if model.admin_date_hierarchy %}      date_hierarchy = {{ model.admin_date_hierarchy.object.name }} {% endif %}
+{% if model.admin_date_hierarchy %}      date_hierarchy = '{{ model.admin_date_hierarchy.object.name }}' {% endif %}
 {% if not model.admin_actions_selection_counter %}      actions_selection_counter = False{% endif %}
 {% if model.admin_exclude.all|length > 0 %}      exclude = ({% for row in model.admin_exclude.all %}'{{ row.object.name }}',{% endfor %}){% endif %}
 {% if model.admin_fields.all|length > 0 %}      fields = ({% for row in model.admin_fields.all %}'{{ row.object.name }}',{% endfor %}){% endif %}

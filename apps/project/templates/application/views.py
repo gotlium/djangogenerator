@@ -5,7 +5,9 @@ from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import get_object_or_404
 
-from apps.project.templates.application.forms import *
+from forms import *
+from models import *
+
 
 {% for model in application.models.all %}
 {% if model.has_read_only_view %}

@@ -5,3 +5,4 @@ django-registration==1.0
 django==1.4.8
 South==0.8.2
 ipython==1.1.0
+readline==6.2.4.1

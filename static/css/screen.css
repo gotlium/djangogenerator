@@ -88,7 +88,7 @@ li{
 .new_application{
     position: absolute;
     right: 5px;
-    top: 130px;
+    top: 120px;
 }
 
 .model_forms li div.model_form{
@@ -328,14 +328,25 @@ span.help{
     position: absolute;
     border: 1px solid gray;
     padding: 3px 5px;
-    background-color: #eeeeee;
+    background-color: #ffffff;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    top: 190px;
-    right: 10px;
+    top: 200px;
+    left: 55px;
 }
 #expand_all{
     display: none;
+}
+
+.ask_exit{
+    position: absolute;
+    border: 1px solid gray;
+    padding: 3px 5px;
+    background-color: #ffffff;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    top: 200px;
+    left: 155px;
 }
 
 #footer{
