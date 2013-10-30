@@ -34,3 +34,9 @@ Now you can run and use djangogenerator.
 .. code-block:: python
 
     $ python manage.py runserver_plus
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/gotlium/djangogenerator/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
